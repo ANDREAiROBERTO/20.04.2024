@@ -78,7 +78,7 @@
                             <h1>Andrea &amp; Roberto</h1>
                             <h2>We Are Getting Married</h2>
                             <div class="simply-countdown simply-countdown-one"></div>
-                            <p><a class="btn btn-default">Save the date</a></p>
+                            <p><a class="btn btn-default" id="saveDateButton" href="#">Save the date</a></p>
                         </div>
                     </div>
                 </div>
@@ -180,7 +180,8 @@
                                         <span>Jablanovec</span>
                                     </div>
                                     <p>Okupljanje na terasi The Lofta počinje već od 19:30, a ulazak u salu se očekuje u
-                                        20h. Svečanom večerom uz bend nastavlja se slavlje do ranih jutarnjih sati uz pregršt dobre zabave.</p>
+                                        20h. Svečanom večerom uz bend nastavlja se slavlje do ranih jutarnjih sati uz
+                                        pregršt dobre zabave.</p>
                                 </div>
                             </div>
                         </div>
@@ -259,6 +260,60 @@
         seconds: d.getSeconds(),
         enableUtc: false
     });
+</script>
+<script>document.addEventListener('DOMContentLoaded', function () {
+    var saveDateButton = document.getElementById('saveDateButton');
+
+    saveDateButton.addEventListener('click', function () {
+        var eventTitle = 'Andrea & Roberto';
+        var eventDate = new Date(2024, 3, 20, 16, 0, 0); // Update with your event date
+
+        var icsContent = generateICSContent(eventTitle, eventDate);
+
+        var blob = new Blob([icsContent], {type: 'text/calendar;charset=utf-8'});
+        var link = document.createElement('a');
+
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'event.ics';
+
+        document.body.appendChild(link);
+        link.click();
+
+        document.body.removeChild(link);
+    });
+
+    function generateICSContent(title, date) {
+        var formattedDate = formatDate(date);
+        return `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:${title}
+DTSTART:${formattedDate}
+DTEND:${formattedDate}
+DESCRIPTION:${title}
+LOCATION:
+STATUS:CONFIRMED
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT15M
+DESCRIPTION:Reminder
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR`;
+    }
+
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var day = date.getDate().toString().padStart(2, '0');
+        var hours = date.getHours().toString().padStart(2, '0');
+        var minutes = date.getMinutes().toString().padStart(2, '0');
+        var seconds = date.getSeconds().toString().padStart(2, '0');
+
+        return `${year}${month}${day}T${hours}${minutes}${seconds}`;
+    }
+});
 </script>
 
 </body>
