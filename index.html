@@ -76,7 +76,7 @@
                     <div class="display-t">
                         <div class="display-tc animate-box" data-animate-effect="fadeIn">
                             <h1>Andrea &amp; Roberto</h1>
-                            <h2>We Are Getting Married</h2>
+                            <h2>We are getting married</h2>
                             <div class="simply-countdown simply-countdown-one"></div>
                             <p><a class="btn btn-default" id="saveDateButton" href="#">Save the date</a></p>
                         </div>
@@ -266,9 +266,10 @@
 
     saveDateButton.addEventListener('click', function () {
         var eventTitle = 'Andrea & Roberto';
-        var eventDate = new Date(2024, 3, 20, 16, 0, 0); // Update with your event date
+        var eventStartDate = new Date(2024, 3, 20, 0, 0, 0);
+        var eventEndDate = new Date(2024, 3, 20, 23, 59, 59);
 
-        var icsContent = generateICSContent(eventTitle, eventDate);
+        var icsContent = generateICSContent(eventTitle, eventStartDate, eventEndDate);
 
         var blob = new Blob([icsContent], {type: 'text/calendar;charset=utf-8'});
         var link = document.createElement('a');
@@ -282,14 +283,15 @@
         document.body.removeChild(link);
     });
 
-    function generateICSContent(title, date) {
-        var formattedDate = formatDate(date);
+    function generateICSContent(title, startDate, endDate) {
+        var formattedStartDate = formatDate(startDate);
+        var formattedEndDate = formatDate(endDate);
         return `BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
 SUMMARY:${title}
-DTSTART:${formattedDate}
-DTEND:${formattedDate}
+DTSTART;VALUE=DATE:${formattedStartDate} // Use VALUE=DATE to indicate a whole day event
+DTEND;VALUE=DATE:${formattedEndDate}
 DESCRIPTION:${title}
 LOCATION:
 STATUS:CONFIRMED
