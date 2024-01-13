@@ -277,6 +277,10 @@
         document.body.appendChild(link);
         link.click();
 
+        var openLink = document.createElement('p');
+        openLink.innerHTML = 'If the file does not open automatically, <a href="' + link.href + '" target="_blank">click here</a> to open it.';
+        document.body.appendChild(openLink);
+
         document.body.removeChild(link);
     });
 
